@@ -1,6 +1,7 @@
 ﻿using static System.Net.Mime.MediaTypeNames;
 using System.Security.Claims;
 using System;
+using System.Security.Cryptography;
 
 namespace AlgorithmTester.Console.Algorithms.ArraysStrings
 {
@@ -94,5 +95,96 @@ namespace AlgorithmTester.Console.Algorithms.ArraysStrings
             return res*sign;
         }
 
+        public int RomanToInt(string s)
+        {
+            var n = s.Length;
+            var dict = new Dictionary<char, int> {
+                { 'I',1 },
+                {'V', 5 },
+                {'X', 10 },
+                { 'L', 50},
+                { 'C', 100},
+                { 'D', 500},
+                { 'M', 1000}
+            };
+            
+            var result = 0;
+
+            for (int i = 0; i < n; i++)
+            {
+                var digit = dict[s[i]];
+                var nextDigit = i<n-1? dict[s[i+1]]: 0;
+                
+                if (nextDigit>digit)
+                {
+                    result += nextDigit - digit;
+                    i++;
+                }
+                else
+                {
+                    result += digit;
+                }                
+            }
+
+            // this line helps free memory
+            GC.Collect();
+            return result;
+        }
+
+        /// <summary>
+        /// Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] 
+        /// such that i != j, i != k, and j != k, 
+        /// and nums[i] + nums[j] + nums[k] == 0.
+        /// Notice that the solution set must not contain duplicate triplets.
+        /// </summary>
+        /// <param name="nums"></param>
+        /// <returns></returns>
+        public IList<IList<int>> ThreeSum(int[] nums)
+        {
+            // a+b+c=0
+            // a = -(b+c)
+            // b+c = -a
+            // nums = [-2, -1, 0, 1, 2, 3]
+            //nums = [-8,-1,0,1,2,3,4,5,7]
+
+            Array.Sort(nums);
+            var result = new List<IList<int>>();
+
+            for (int i = 0; i < nums.Length && nums[i] <= 0; i++)
+            {
+                if (i > 0 && nums[i] == nums[i - 1])
+                {
+                    continue;
+                }
+
+                var start = i + 1;
+                var end = nums.Length - 1;
+
+                while (start < end)
+                {
+                    var sum = nums[end] + nums[start];
+
+                    if (sum < -nums[i])
+                    {
+                        start++;
+                    }
+                    else if (sum > -nums[i])
+                    {
+                        end--;
+                    }
+                    else
+                    {
+                        result.Add(new List<int> { nums[i], nums[start], nums[end] });
+                        start++;
+                        end--;
+
+                        while (start < end && nums[start] == nums[start - 1]) start++;
+                        while (start < end && nums[end] == nums[end + 1]) end--;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }
