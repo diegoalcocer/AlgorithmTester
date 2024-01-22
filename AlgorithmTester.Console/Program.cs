@@ -25,6 +25,9 @@ while (true)
         case "4":
             ThreeSum();
             break;
+        case "5":
+            RemoveDuplicates();
+            break;
         case "E":
             return;
         default:
@@ -81,5 +84,18 @@ void ThreeSum()
     {
         Console.WriteLine($"[{string.Join(", ", triplet)}]");
     }
+    Console.WriteLine();
+}
+void RemoveDuplicates()
+{
+    var str = new ArraysStrings();
+    Console.WriteLine("Numbers: ");
+    var s = Console.ReadLine();
+
+    s = string.IsNullOrEmpty(s) ? "" : s;
+    var nums = s.Split(',').Where(n => !string.IsNullOrEmpty(n.Trim())).Select(int.Parse).ToArray();
+
+    var triplets = str.RemoveDuplicates(nums);
+    
     Console.WriteLine();
 }
