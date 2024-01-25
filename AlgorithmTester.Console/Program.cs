@@ -7,6 +7,8 @@ while (true)
     Console.WriteLine("2: String to Integer (atoi)");
     Console.WriteLine("3: Roman to integer");
     Console.WriteLine("4: Three Sum");
+    Console.WriteLine("5: Remove Duplicates");
+    Console.WriteLine("6: Next Permutation");
     Console.WriteLine("E: Exit");
 
     var choice = Console.ReadLine();
@@ -27,6 +29,9 @@ while (true)
             break;
         case "5":
             RemoveDuplicates();
+            break;
+        case "6":
+            NextPermutation();
             break;
         case "E":
             return;
@@ -98,4 +103,21 @@ void RemoveDuplicates()
     var triplets = str.RemoveDuplicates(nums);
     
     Console.WriteLine();
+}
+void NextPermutation()
+{
+    var str = new ArraysStrings();
+    Console.WriteLine("Numbers: ");
+    var s = Console.ReadLine();
+
+    s = string.IsNullOrEmpty(s) ? "" : s;
+    var nums = s.Split(',').Where(n => !string.IsNullOrEmpty(n.Trim())).Select(int.Parse).ToArray();
+
+    str.NextPermutation(nums);
+    var res = string.Join(",", nums);
+    
+    Console.WriteLine($"Result: [{res}]");
+
+    Console.WriteLine();
+    Console.ReadLine();
 }
